@@ -1,0 +1,84 @@
+Element = require('spark-starter').Element
+
+class Connected extends Element
+  @properties
+    signals:
+      collection: true
+    inputs:
+      collection: true
+    outputs:
+      collection: true
+
+
+    canConnectTo: (target) ->
+      false
+    acceptSignal: (signal) ->
+      true
+    onAddConnection: (conn)->
+    onRemoveConnection: (conn)->
+    onNewSignalType: (signal) ->
+    onAddSignal: (signal, op) ->
+    onRemoveSignal: (signal, op) ->
+    onRemoveSignalType: (signal, op) ->
+    onReplaceSignal: (oldSignal, newSignal, op) ->
+
+  containsSignal: (signal, checkLast = false, checkOrigin)->
+    for c in @signals
+      if c.match(signal, checkLast, checkOrigin)
+        return c
+    null
+  addSignal: (signal, op) ->
+    unless op?.findLimiter(this)
+      unless op
+        op = new SignalOperation()
+        autoStart = true
+      op.addOperation =>
+        if !@containsSignal(signal, true) and @acceptSignal(signal)
+          similar = @containsSignal(signal)
+          @signals.push(signal)
+          @onAddSignal(signal, op)
+          unless similar
+            @onNewSignalType(signal, op)
+      if autoStart
+        op.start()
+    signal
+  removeSignal: (signal, op) ->
+    unless op?.findLimiter(this)
+      unless op
+        op = new SignalOperation
+        autoStart = true
+      op.addOperation =>
+        if (existing = @containsSignal(signal, true)) and @acceptSignal(signal)
+          @signals.splice(@signals.indexOf(existing), 1)
+          @onRemoveSignal(signal, op)
+          op.addOperation =>
+              similar = @containsSignal(signal)
+              if similar
+                @onReplaceSignal(signal, similar, op)
+              else
+                @onRemoveSignalType(signal, op)
+            , 0
+        if stepByStep
+          op.step()
+      if autoStart
+        return op.start()
+  prepForwardedSignal: (signal) ->
+    if signal.last == this then signal else signal.withLast(this)
+  forwardSignal: (signal, op) ->
+    next = @prepForwardedSignal(signal)
+    for key, conn of @getOutputs()
+      if signal.last != conn
+        conn.addSignal(next, op)
+  forwardAllSignalsTo: (conn, op) ->
+    for signal in @signals
+      next = @prepForwardedSignal(signal)
+      conn.addSignal(next, op)
+  stopForwardedSignal: (signal, op) ->
+    next = @prepForwardedSignal(signal)
+    for key, conn of @getOutputs()
+      if signal.last != conn
+        conn.removeSignal(next, op)
+  stopAllForwardedSignalTo: (conn, op) ->
+    for signal in @signals
+      next = @prepForwardedSignal(signal)
+      conn.removeSignal(next, op)
