@@ -10,17 +10,17 @@ class Connected extends Element
       collection: true
 
 
-    canConnectTo: (target) ->
-      false
-    acceptSignal: (signal) ->
-      true
-    onAddConnection: (conn)->
-    onRemoveConnection: (conn)->
-    onNewSignalType: (signal) ->
-    onAddSignal: (signal, op) ->
-    onRemoveSignal: (signal, op) ->
-    onRemoveSignalType: (signal, op) ->
-    onReplaceSignal: (oldSignal, newSignal, op) ->
+  canConnectTo: (target) ->
+    typeof target.addSignal == "function"
+  acceptSignal: (signal) ->
+    true
+  onAddConnection: (conn)->
+  onRemoveConnection: (conn)->
+  onNewSignalType: (signal) ->
+  onAddSignal: (signal, op) ->
+  onRemoveSignal: (signal, op) ->
+  onRemoveSignalType: (signal, op) ->
+  onReplaceSignal: (oldSignal, newSignal, op) ->
 
   containsSignal: (signal, checkLast = false, checkOrigin)->
     for c in @signals
