@@ -15,10 +15,11 @@
     "gulp-coffee": "^2.3.3",
     "gulp-mocha": "^4.3.0",
     "mocha": "^3.2.0",
-    "spark-wrapper": "github:kevthunder/spark-wrapper"
+    "spark-wrapper": "github:kevthunder/spark-wrapper",
+    "wolfy87-eventemitter": "^5.2.4"
   },
   "dependencies": {
     "spark-starter": "kevthunder/spark-starter#v0.6.x",
-    "parallelio-tiles": "kevthunder/parallelio-tiles"
+    "parallelio-tiles": "kevthunder/parallelio-tiles#v1.0.1"
   }
 }
