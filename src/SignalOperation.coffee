@@ -1,6 +1,6 @@
 Element = require('spark-starter').Element
 
-class SignalOperation extends Module
+class SignalOperation extends Element
   constructor: () ->
     super()
     @queue = []

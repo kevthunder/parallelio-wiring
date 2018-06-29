@@ -19,3 +19,5 @@ class Wire extends Tiled
   canConnectTo: (target) ->
     Connected::canConnectTo.call(this,target) and (!target.wireType? or target.wireType == @wireType)
 
+  onNewSignalType: (signal, op) ->
+    @forwardSignal(signal, op)

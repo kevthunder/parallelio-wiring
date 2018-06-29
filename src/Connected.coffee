@@ -1,4 +1,5 @@
 Element = require('spark-starter').Element
+SignalOperation = require('./SignalOperation')
 
 class Connected extends Element
   @properties
@@ -23,10 +24,8 @@ class Connected extends Element
   onReplaceSignal: (oldSignal, newSignal, op) ->
 
   containsSignal: (signal, checkLast = false, checkOrigin)->
-    for c in @signals
-      if c.match(signal, checkLast, checkOrigin)
-        return c
-    null
+    @signals.find (c)->
+      c.match(signal, checkLast, checkOrigin)
   addSignal: (signal, op) ->
     unless op?.findLimiter(this)
       unless op
@@ -66,19 +65,19 @@ class Connected extends Element
     if signal.last == this then signal else signal.withLast(this)
   forwardSignal: (signal, op) ->
     next = @prepForwardedSignal(signal)
-    for key, conn of @getOutputs()
+    @outputs.forEach (conn)->
       if signal.last != conn
         conn.addSignal(next, op)
   forwardAllSignalsTo: (conn, op) ->
-    for signal in @signals
+    @signals.forEach (signal)=>
       next = @prepForwardedSignal(signal)
       conn.addSignal(next, op)
   stopForwardedSignal: (signal, op) ->
     next = @prepForwardedSignal(signal)
-    for key, conn of @getOutputs()
+    @outputs.forEach (conn)->
       if signal.last != conn
         conn.removeSignal(next, op)
   stopAllForwardedSignalTo: (conn, op) ->
-    for signal in @signals
+    @signals.forEach (signal)=>
       next = @prepForwardedSignal(signal)
       conn.removeSignal(next, op)
