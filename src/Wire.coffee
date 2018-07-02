@@ -1,4 +1,5 @@
 Tiled = require('parallelio-tiles').Tiled
+Direction = require('parallelio-tiles').Direction
 Connected = require('./Connected')
 
 class Wire extends Tiled
@@ -15,6 +16,13 @@ class Wire extends Tiled
               this.canConnectTo(child)
             .toArray())
         , []
+    connectedDirections:
+      calcul: (invalidation)->
+        invalidation.prop('outputs').reduce (out,conn)=>
+            if (d = @tile.findDirectionOf(conn)) and d not in out
+              out.push(d)
+            out
+          , []
 
   canConnectTo: (target) ->
     Connected::canConnectTo.call(this,target) and (!target.wireType? or target.wireType == @wireType)

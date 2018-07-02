@@ -1,5 +1,5 @@
 (function() {
-  var EventEmitter, Signal, Tile, TileContainer, Wire, assert, createLoopWireStage, createWireStage;
+  var Direction, EventEmitter, Signal, Tile, TileContainer, Wire, assert, createLoopWireStage, createWireStage;
 
   assert = require('chai').assert;
 
@@ -8,6 +8,8 @@
   Tile = require('parallelio-tiles').Tile;
 
   TileContainer = require('parallelio-tiles').TileContainer;
+
+  Direction = require('parallelio-tiles').Direction;
 
   Wire = require('../lib/Wire');
 
@@ -149,7 +151,7 @@
       assert.notExists(testSignal(container.getTile(2, 3).children.get(0), signal2));
       return assert.notExists(testSignal(container.getTile(0, 1).children.get(0), signal2));
     });
-    return it('can forward non-exclusive Signal', function() {
+    it('can forward non-exclusive Signal', function() {
       var container, signal1, signal2, start1, start2, testSignal;
       container = createWireStage();
       start1 = container.getTile(2, 0).children.get(0);
@@ -167,6 +169,18 @@
       assert.exists(testSignal(container.getTile(0, 1).children.get(0), signal1));
       assert.exists(testSignal(container.getTile(2, 3).children.get(0), signal2));
       return assert.exists(testSignal(container.getTile(0, 1).children.get(0), signal2));
+    });
+    return it('can find connected directions', function() {
+      var container;
+      container = createWireStage();
+      assert.include(container.getTile(1, 2).children.get(0).connectedDirections, Direction.up);
+      assert.include(container.getTile(1, 2).children.get(0).connectedDirections, Direction.down);
+      assert.include(container.getTile(1, 2).children.get(0).connectedDirections, Direction.left);
+      assert.notInclude(container.getTile(1, 2).children.get(0).connectedDirections, Direction.right);
+      assert.notInclude(container.getTile(0, 1).children.get(0).connectedDirections, Direction.up);
+      assert.notInclude(container.getTile(0, 1).children.get(0).connectedDirections, Direction.down);
+      assert.notInclude(container.getTile(0, 1).children.get(0).connectedDirections, Direction.left);
+      return assert.include(container.getTile(0, 1).children.get(0).connectedDirections, Direction.right);
     });
   });
 
