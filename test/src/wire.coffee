@@ -162,6 +162,25 @@ describe 'Wire', ->
     assert.exists testSignal(container.getTile(2,3).children.get(0),signal2)
     assert.exists testSignal(container.getTile(0,1).children.get(0),signal2)
 
+  it 'can forward Signal to later added wire', ->
+    container = createWireStage()
+    startWire = container.getTile(2,0).children.get(0)
+
+    signal = new Signal(null,'test')
+    startWire.addSignal(signal)
+
+    testSignal = (wire,type) ->
+      wire.signals.find (s)->
+        s.type == type
+
+    assert.exists testSignal(container.getTile(2,3).children.get(0),signal.type)
+
+    wire = new Wire("red")
+    container.getTile(3,3).addChild(wire)
+
+    assert.exists testSignal(wire,signal.type)
+
+
   it 'can find connected directions', ->
     container = createWireStage()
 

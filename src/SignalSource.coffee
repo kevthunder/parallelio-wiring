@@ -1,5 +1,6 @@
 Connected = require('Connected')
 Signal = require('Signal')
+SignalOperation = require('SignalOperation')
 
 class SignalSource extends Connected
   @properties

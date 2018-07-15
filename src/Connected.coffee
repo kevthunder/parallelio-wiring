@@ -9,6 +9,14 @@ class Connected extends Element
       collection: true
     outputs:
       collection: true
+      itemAdded: (output,i)->
+        @forwardedSignals.forEach (signal)=>
+          @forwardSignalTo(signal,output)
+      itemRemoved: (output,i)->
+        @forwardedSignals.forEach (signal)=>
+          @stopForwardedSignalTo(signal,output)
+    forwardedSignals :
+      collection: true
 
 
   canConnectTo: (target) ->
@@ -64,6 +72,7 @@ class Connected extends Element
   prepForwardedSignal: (signal) ->
     if signal.last == this then signal else signal.withLast(this)
   forwardSignal: (signal, op) ->
+    @forwardedSignals.add(signal)
     next = @prepForwardedSignal(signal)
     @outputs.forEach (conn)->
       if signal.last != conn
@@ -73,6 +82,7 @@ class Connected extends Element
       next = @prepForwardedSignal(signal)
       conn.addSignal(next, op)
   stopForwardedSignal: (signal, op) ->
+    @forwardedSignals.remove(signal)
     next = @prepForwardedSignal(signal)
     @outputs.forEach (conn)->
       if signal.last != conn
@@ -80,4 +90,12 @@ class Connected extends Element
   stopAllForwardedSignalTo: (conn, op) ->
     @signals.forEach (signal)=>
       next = @prepForwardedSignal(signal)
+      conn.removeSignal(next, op)
+  forwardSignalTo: (signal, conn, op) ->
+    next = @prepForwardedSignal(signal)
+    if signal.last != conn
+      conn.addSignal(next, op)
+  stopForwardedSignalTo: (signal, conn, op) ->
+    next = @prepForwardedSignal(signal)
+    if signal.last != conn
       conn.removeSignal(next, op)

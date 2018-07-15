@@ -11,18 +11,31 @@ class Wire extends Tiled
     outputs:
       calcul: (invalidation)->
         parent = invalidation.prop('tile')
-        invalidation.prop('adjacentTiles',parent).reduce (res,tile) =>
-          res.concat(invalidation.prop('children',tile).filter (child) =>
-              this.canConnectTo(child)
-            .toArray())
-        , []
+        if parent
+          invalidation.prop('adjacentTiles',parent).reduce (res,tile) =>
+            res.concat(invalidation.prop('children',tile).filter (child) =>
+                this.canConnectTo(child)
+              .toArray())
+          , []
+        else 
+          []
     connectedDirections:
       calcul: (invalidation)->
         invalidation.prop('outputs').reduce (out,conn)=>
-            if (d = @tile.findDirectionOf(conn)) and d not in out
-              out.push(d)
+            @findDirectionsTo(conn).forEach (d)->
+              if d not in out
+                out.push(d)
             out
           , []
+
+  findDirectionsTo: (conn)->
+    directions = if conn.tiles?
+      conn.tiles.map (tile)=>
+        @tile.findDirectionOf(tile)
+    else
+      [@tile.findDirectionOf(conn)]
+    directions.filter (d)->
+      d?
 
   canConnectTo: (target) ->
     Connected::canConnectTo.call(this,target) and (!target.wireType? or target.wireType == @wireType)
