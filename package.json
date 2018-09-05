@@ -11,15 +11,14 @@
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.1",
-    "gulp": "^3.9.1",
-    "gulp-coffee": "^2.3.3",
+    "gulp": "^4.0",
+    "gulp-coffee": "^3.0.2",
     "gulp-mocha": "^6.0.0",
     "mocha": "^5.2.0",
-    "spark-wrapper": "github:kevthunder/spark-wrapper",
-    "wolfy87-eventemitter": "^5.2.4"
+    "spark-wrapper": "github:kevthunder/spark-wrapper"
   },
   "dependencies": {
-    "parallelio-tiles": "github:kevthunder/parallelio-tiles",
-    "spark-starter": "kevthunder/spark-starter#v0.7.x"
+    "spark-starter": "kevthunder/spark-starter#v0.8.x",
+    "parallelio-tiles": "kevthunder/parallelio-tiles"
   }
 }

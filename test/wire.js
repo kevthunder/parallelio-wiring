@@ -3,7 +3,7 @@
 
   assert = require('chai').assert;
 
-  EventEmitter = require("wolfy87-eventemitter");
+  EventEmitter = require('spark-starter').EventEmitter;
 
   Tile = require('parallelio-tiles').Tile;
 
@@ -18,22 +18,26 @@
   createWireStage = function() {
     return (new TileContainer).tap(function() {
       var b, m, n, r;
+      // tile with red wire
       r = function(opt) {
         return (new Tile(opt.x, opt.y)).tap(function() {
           return this.addChild(new Wire("red"));
         });
       };
+      // tile with blue wire
       b = function(opt) {
         return (new Tile(opt.x, opt.y)).tap(function() {
           return this.addChild(new Wire("blue"));
         });
       };
+      // tile with red and blue wire
       m = function(opt) {
         return (new Tile(opt.x, opt.y)).tap(function() {
           this.addChild(new Wire("red"));
           return this.addChild(new Wire("blue"));
         });
       };
+      // tile with no wire
       n = function(opt) {
         return new Tile(opt.x, opt.y);
       };
@@ -44,22 +48,26 @@
   createLoopWireStage = function() {
     return (new TileContainer).tap(function() {
       var b, m, n, r;
+      // tile with red wire
       r = function(opt) {
         return (new Tile(opt.x, opt.y)).tap(function() {
           return this.addChild(new Wire("red"));
         });
       };
+      // tile with blue wire
       b = function(opt) {
         return (new Tile(opt.x, opt.y)).tap(function() {
           return this.addChild(new Wire("blue"));
         });
       };
+      // tile with red and blue wire
       m = function(opt) {
         return (new Tile(opt.x, opt.y)).tap(function() {
           this.addChild(new Wire("red"));
           return this.addChild(new Wire("blue"));
         });
       };
+      // tile with no wire
       n = function(opt) {
         return new Tile(opt.x, opt.y);
       };

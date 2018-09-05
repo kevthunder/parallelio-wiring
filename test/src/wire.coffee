@@ -1,5 +1,5 @@
 assert = require('chai').assert
-EventEmitter = require("wolfy87-eventemitter")
+EventEmitter = require('spark-starter').EventEmitter
 Tile = require('parallelio-tiles').Tile
 TileContainer = require('parallelio-tiles').TileContainer
 Direction = require('parallelio-tiles').Direction
