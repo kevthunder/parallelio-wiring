@@ -1,5 +1,6 @@
 Element = require('spark-starter').Element
 SignalOperation = require('./SignalOperation')
+CollectionPropertyWatcher = require('spark-starter').CollectionPropertyWatcher
 
 class Connected extends Element
   @properties
@@ -9,12 +10,6 @@ class Connected extends Element
       collection: true
     outputs:
       collection: true
-      itemAdded: (output,i)->
-        @forwardedSignals.forEach (signal)=>
-          @forwardSignalTo(signal,output)
-      itemRemoved: (output,i)->
-        @forwardedSignals.forEach (signal)=>
-          @stopForwardedSignalTo(signal,output)
     forwardedSignals :
       collection: true
 
@@ -71,12 +66,26 @@ class Connected extends Element
         return op.start()
   prepForwardedSignal: (signal) ->
     if signal.last == this then signal else signal.withLast(this)
+  checkForwardWatcher: ()->
+    unless @forwardWatcher
+      @forwardWatcher = new CollectionPropertyWatcher({
+        scope: this
+        property: 'outputs'
+        onAdded: (output,i)->
+          @forwardedSignals.forEach (signal)=>
+            @forwardSignalTo(signal,output)
+        onRemoved: (output,i)->
+          @forwardedSignals.forEach (signal)=>
+            @stopForwardedSignalTo(signal,output)
+      })
+      @forwardWatcher.bind()
   forwardSignal: (signal, op) ->
     @forwardedSignals.add(signal)
     next = @prepForwardedSignal(signal)
     @outputs.forEach (conn)->
       if signal.last != conn
         conn.addSignal(next, op)
+    @checkForwardWatcher()
   forwardAllSignalsTo: (conn, op) ->
     @signals.forEach (signal)=>
       next = @prepForwardedSignal(signal)
