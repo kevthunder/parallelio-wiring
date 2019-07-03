@@ -18,7 +18,7 @@
     "spark-wrapper": "github:kevthunder/spark-wrapper"
   },
   "dependencies": {
-    "spark-starter": "kevthunder/spark-starter#v0.8.x",
+    "spark-starter": "kevthunder/spark-starter#v0.9.x",
     "parallelio-tiles": "kevthunder/parallelio-tiles"
   }
 }
