@@ -1,3 +1,3 @@
-Connected = require('Connected')
+Connected = require('./Connected')
 
-class Switch extends Connected
+module.exports = class Switch extends Connected
