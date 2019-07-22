@@ -76,12 +76,6 @@
   };
 
   describe('Wire', function() {
-    before(function() {
-      Wire = Wire.definition();
-      Wire.include(EventEmitter.prototype);
-      Tile = Tile.definition();
-      return Tile.include(EventEmitter.prototype);
-    });
     it('can connect to other wire of same type', function() {
       var wire1, wire2;
       wire1 = new Wire("red");

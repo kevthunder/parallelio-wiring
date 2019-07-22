@@ -1,6 +1,6 @@
 Element = require('spark-starter').Element
 
-class Signal extends Element
+module.exports = class Signal extends Element
   constructor: (@origin, @type = 'signal', @exclusive = false) ->
     super()
     @last = @origin

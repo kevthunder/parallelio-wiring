@@ -1,8 +1,8 @@
-Connected = require('Connected')
-Signal = require('Signal')
-SignalOperation = require('SignalOperation')
+Connected = require('./Connected')
+Signal = require('./Signal')
+SignalOperation = require('./SignalOperation')
 
-class SignalSource extends Connected
+module.exports = class SignalSource extends Connected
   @properties
     activated:
       change: ->

@@ -58,12 +58,6 @@ createLoopWireStage = ->
       ]);
 
 describe 'Wire', ->
-  before ->
-    Wire = Wire.definition()
-    Wire.include EventEmitter.prototype
-
-    Tile = Tile.definition()
-    Tile.include EventEmitter.prototype
 
   it 'can connect to other wire of same type', ->
     wire1 = new Wire("red")

@@ -2,7 +2,7 @@ Tiled = require('parallelio-tiles').Tiled
 Direction = require('parallelio-tiles').Direction
 Connected = require('./Connected')
 
-class Wire extends Tiled
+module.exports = class Wire extends Tiled
   @extend Connected
   constructor: (@wireType = 'red') ->
     super()
