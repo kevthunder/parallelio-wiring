@@ -10,10 +10,10 @@ module.exports = class Wire extends Tiled
   @properties
     outputs:
       calcul: (invalidation)->
-        parent = invalidation.prop('tile')
+        parent = invalidation.prop(@tileProperty)
         if parent
-          invalidation.prop('adjacentTiles',parent).reduce (res,tile) =>
-            res.concat(invalidation.prop('children',tile).filter (child) =>
+          invalidation.prop(parent.adjacentTilesProperty).reduce (res,tile) =>
+            res.concat(invalidation.prop(tile.childrenProperty).filter (child) =>
                 this.canConnectTo(child)
               .toArray())
           , []
@@ -21,7 +21,7 @@ module.exports = class Wire extends Tiled
           []
     connectedDirections:
       calcul: (invalidation)->
-        invalidation.prop('outputs').reduce (out,conn)=>
+        invalidation.prop(@outputsProperty).reduce (out,conn)=>
             @findDirectionsTo(conn).forEach (d)->
               if d not in out
                 out.push(d)

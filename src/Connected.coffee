@@ -1,6 +1,6 @@
 Element = require('spark-starter').Element
 SignalOperation = require('./SignalOperation')
-CollectionPropertyWatcher = require('spark-starter').Invalidated.CollectionPropertyWatcher
+CollectionPropertyWatcher = require('spark-starter').watchers.CollectionPropertyWatcher
 
 module.exports = class Connected extends Element
   @properties
