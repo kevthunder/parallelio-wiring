@@ -19,6 +19,6 @@
   },
   "dependencies": {
     "parallelio-tiles": "github:kevthunder/parallelio-tiles",
-    "spark-starter": "github:kevthunder/spark-starter#use-spark-properties"
+    "spark-starter": "github:kevthunder/spark-starter#v0.11.x"
   }
 }
